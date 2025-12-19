@@ -1,14 +1,25 @@
-import hre from "hardhat"; // Import the default HRE object
+import { network } from "hardhat";
 
 async function main() {
-  // Access viem through 'hre.viem'
-  const publicClient = await hre.viem.getPublicClient();
+  // Connect to the network
+  const connection = await network.connect();
+  
+  console.log("Connected to network:", connection.networkName);
+  console.log("Connection object:", Object.keys(connection));
 
-  const [deployer] = await hre.viem.getWalletClients();
+  // Access viem from the connection
+  const viem = connection.viem;
+  if (!viem) {
+    throw new Error("Viem is not available. Make sure @nomicfoundation/hardhat-viem is properly configured.");
+  }
 
-  console.log("Deploying contracts with the account:", deployer.account.address);
+  // Get wallet clients
+  const [deployer] = await viem.getWalletClients();
 
-  const product = await hre.viem.deployContract("ProductIdentification", []);
+  console.log("Deploying contracts with account:", deployer.account.address);
+
+  // Deploy contract
+  const product = await viem.deployContract("ProductIdentification", []);
 
   console.log("----------------------------------------------------");
   console.log("✅ Product System deployed successfully!");

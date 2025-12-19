@@ -1,7 +1,9 @@
 import "@nomicfoundation/hardhat-toolbox-viem";
 import { configVariable, defineConfig } from "hardhat/config";
+import hardhatToolboxViem from "@nomicfoundation/hardhat-toolbox-viem";
 
 export default defineConfig({
+  plugins: [hardhatToolboxViem],
   solidity: {
     profiles: {
       default: {
